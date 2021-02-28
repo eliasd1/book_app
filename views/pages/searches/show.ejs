@@ -19,8 +19,11 @@
         </nav>
     </header>
     <main>
+        <div class = "main-header">
+            <p>Search Results</p>
+        </div>
         <% books.forEach(book => { %>
-            <section>
+            <section class = "display-books">
                 <img src="<%= book.img_url %>" alt="">
                 <h3><%= book.title %> </h3>
                 <h4><%= book.authorName %> </h4>
