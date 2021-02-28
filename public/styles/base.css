@@ -2,3 +2,11 @@ h1{
     font-size:5em;
     text-align: center;
 }
+header{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    color:white;
+    height:7vh;
+    background-color: gray;
+}

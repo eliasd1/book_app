@@ -1,0 +1,38 @@
+.hamburger-menu{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.hamburger-menu>div {
+    width: 1em;
+    height: 0.125em;
+    background-color: white;
+    margin:0.1em;
+    border-radius:2em;
+  }
+
+#searchForm{
+    display:flex;
+    flex-direction: column;
+    width:80%;
+    margin:2em auto;
+}
+#searchForm>*{
+    margin:1em;
+    height:2em;
+}
+#searchInput{
+    border:0;
+}
+.radioButtons{
+    padding:0.5em;
+    display:flex;
+    align-items: center;
+    background:gray;
+}
+#submitBtn{
+    height:3em;
+    background:black;
+    border:0;
+    color:white;
+}
