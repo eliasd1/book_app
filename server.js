@@ -38,7 +38,7 @@ function handleSearch(req, res){
     getBooksData(req.body.searchQuery, req.body.searcBy).then(data =>{
         console.log("data", data)
         res.render('pages/searches/show', {books:data})
-    }).then(error => console.log(error))
+    }).catch(error => res.render('pages/error', {error:error}))
 }
 
 function getBooksData(searchQuery, searchBy){
@@ -54,5 +54,5 @@ function getBooksData(searchQuery, searchBy){
             }
             return new Book(results.imageLinks.thumbnail , results.title, results.authors[0],results.description)
         })
-    })
+    }).catch(error => res.render('pages/error', {error:error}))
 }

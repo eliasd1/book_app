@@ -36,3 +36,16 @@
     border:0;
     color:white;
 }
+#error{
+    text-align: center;
+}
+#error>h2{
+    font-size:5em;
+}
+#error>p{
+    font-size:2em;
+}
+#error>img{
+    width:50%;
+    max-height:40%;
+}
