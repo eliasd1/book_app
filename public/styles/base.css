@@ -2,3 +2,7 @@ h1{
     font-size:5em;
     text-align: center;
 }
+header{
+    height:7vh;
+    background-color: gray;
+}
