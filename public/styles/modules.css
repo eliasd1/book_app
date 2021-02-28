@@ -1,6 +1,12 @@
+.hamburger-menu{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
 .hamburger-menu>div {
-    width: 35px;
-    height: 5px;
-    background-color: black;
-    margin: 6px 0;
+    width: 1em;
+    height: 0.125em;
+    background-color: white;
+    margin:0.1em;
+    border-radius:2em;
   }
