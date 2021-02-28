@@ -13,7 +13,7 @@ app.use(cors());
 app.use(bodyParser())
 const baseAPIUrl = 'https://www.googleapis.com/books/v1/volumes';
 
-app.get('/hello', (req, res) =>{
+app.get('/', (req, res) =>{
     res.render('pages/index');
 })
 

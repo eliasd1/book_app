@@ -10,7 +10,11 @@
     margin:0.1em;
     border-radius:2em;
   }
-
+.main-header{
+    text-align:center;
+    background: #4a4a4a;
+    line-height:2em;
+}
 #searchForm{
     display:flex;
     flex-direction: column;
@@ -18,11 +22,13 @@
     margin:2em auto;
 }
 #searchForm>*{
+    box-sizing: border-box;
     margin:1em;
-    height:2em;
+    height:3em;
 }
 #searchInput{
     border:0;
+    padding:0.5em;
 }
 .radioButtons{
     padding:0.5em;
@@ -30,8 +36,11 @@
     align-items: center;
     background:gray;
 }
+.radioButtons>label{
+    margin-right:1.5em;
+}
 #submitBtn{
-    height:3em;
+    height:3.5em;
     background:black;
     border:0;
     color:white;
@@ -48,4 +57,11 @@
 #error>img{
     width:50%;
     max-height:40%;
+}
+#front-page-img{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    height: 93vh;
+    z-index: -1;
 }
