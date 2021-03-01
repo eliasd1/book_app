@@ -26,15 +26,17 @@ app.get('/searches/new', (req, res) =>{
 
 app.post('/searches', handleSearch)
 
+
 app.get("/books/:id", handleBook)
+app.post("/books", handleSelectedBook)
 
 
-
-function Book(img_url, title, author_name, description){
+function Book(img_url, title, author_name, description, isbn){
     this.img_url = img_url;
     this.title = title;
     this.authorName = author_name;
     this.description = description || '';
+    this.isbn = isbn;
 }
 
   
@@ -50,6 +52,16 @@ function handleBook(req, res){
         res.render('pages/books/detail', {book: data})
     })
    
+}
+
+function handleSelectedBook(req, res){
+    let formData = req.body;
+    let safeValues = [formData.title, formData.description, formData.authorName, formData.isbn, formData.img_url];
+    let insertQuery = 'INSERT INTO favourite(title, description, author, isbn, image_url) VALUES($1, $2, $3, $4, $5) RETURNING *;'
+
+    client.query(insertQuery, safeValues).then(data =>{
+        res.redirect(`/books/${data.rows[0].id}`)
+    })
 }
 
 function getDataFromFavourite(id){
@@ -91,7 +103,7 @@ function getBooksData(searchQuery, searchBy){
                 results.industryIdentifiers = ['', {identifier: ''}];
             }
             
-            return new Book(results.imageLinks.thumbnail , results.title, results.authors[0],results.description)
+            return new Book(results.imageLinks.thumbnail , results.title, results.authors[0],results.description, results.industryIdentifiers[1].identifier)
   
         })
     }).catch(error => console.log("error", error))

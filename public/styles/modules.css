@@ -68,3 +68,6 @@
 #detailHeader{
     text-align: center;
 }
+#selectBook{
+    display: none;
+}
