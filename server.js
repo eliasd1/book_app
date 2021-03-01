@@ -8,7 +8,8 @@ const pg = require('pg');
 const app = express();
 
 // { connectionString: process.env.DATABASE_URL,   ssl: { rejectUnauthorized: false } }
-let client =new pg.Client(process.env.databaseUrl);
+// process.env.databaseUrl
+let client =new pg.Client({ connectionString: process.env.DATABASE_URL,   ssl: { rejectUnauthorized: false } });
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.use(cors());
