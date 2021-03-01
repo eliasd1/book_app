@@ -28,7 +28,7 @@ app.post('/searches', handleSearch)
 
 
 function Book(img_url, title, author_name, description){
-    this.img_url = img_url || `https://i.imgur.com/J5LVHEL.jpg`;
+    this.img_url = img_url;
     this.title = title;
     this.authorName = author_name;
     this.description = description || '';
@@ -50,7 +50,6 @@ function getdataFromDb(){
 
 function handleSearch(req, res){
     getBooksData(req.body.searchQuery, req.body.searchBy).then(data =>{
-        console.log("data", data)
         res.render('pages/searches/show', {books:data})
     }).catch(error => res.render('pages/error', {error:error}))
 }
@@ -58,13 +57,16 @@ function handleSearch(req, res){
 function getBooksData(searchQuery, searchBy){
     let searchParams = `${searchQuery}+in${searchBy}`
     const query = {
-        q: searchParams
+        q: searchParams,
     }
     return superAgent.get(baseAPIUrl).query(query).then(books =>{
         return books.body.items.map(book =>{
             let results = book.volumeInfo;
             if(typeof results.authors === 'undefined'){
                 results.authors = ['']
+            }
+            if(typeof results.imageLinks === 'undefined'){
+                results.imageLinks= {thumbnail: `https://i.imgur.com/J5LVHEL.jpg`}
             }
             return new Book(results.imageLinks.thumbnail , results.title, results.authors[0],results.description)
         })
