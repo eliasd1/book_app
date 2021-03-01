@@ -7,7 +7,8 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const pg = require('pg');
 const app = express();
-let client =new pg.Client(process.env.databaseUrl);
+// process.env.databaseUrl
+let client =new pg.Client({ connectionString: process.env.databaseUrl,   ssl: { rejectUnauthorized: false } });
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.use(cors());
