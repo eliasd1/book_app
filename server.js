@@ -3,16 +3,16 @@
 const express = require('express');
 const cors = require('cors');
 const superAgent = require('superagent');
-const bodyParser = require('body-parser');
 require('dotenv').config();
 const pg = require('pg');
 const app = express();
-// process.env.databaseUrl
-let client =new pg.Client({ connectionString: process.env.DATABASE_URL,   ssl: { rejectUnauthorized: false } });
+
+// { connectionString: process.env.DATABASE_URL,   ssl: { rejectUnauthorized: false } }
+let client =new pg.Client(process.env.databaseUrl);
 app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.use(cors());
-app.use(bodyParser())
+app.use(express.urlencoded({extended:true}))
 const baseAPIUrl = 'https://www.googleapis.com/books/v1/volumes';
 
 
@@ -25,6 +25,7 @@ app.get('/searches/new', (req, res) =>{
 
 app.post('/searches', handleSearch)
 
+app.get("/books/:id", handleBook)
 
 
 
@@ -34,6 +35,7 @@ function Book(img_url, title, author_name, description){
     this.authorName = author_name;
     this.description = description || '';
 }
+
   
 function handleHome(req,res){
 getdataFromDb().then(data=>{
@@ -42,6 +44,19 @@ getdataFromDb().then(data=>{
 });
 }
 
+function handleBook(req, res){
+    getDataFromFavourite(req.params.id).then(data =>{
+        res.render('pages/books/detail', {book: data})
+    })
+   
+}
+
+function getDataFromFavourite(id){
+    let findBook = 'SELECT * FROM favourite WHERE id = $1'
+    return client.query(findBook, [id]).then(book =>{
+        return book.rows[0];
+    })
+}
 function getdataFromDb(){
     
     let myData="select * from favourite;"
@@ -68,10 +83,17 @@ function getBooksData(searchQuery, searchBy){
             }
             if(typeof results.imageLinks === 'undefined'){
                 results.imageLinks= {thumbnail: `https://i.imgur.com/J5LVHEL.jpg`}
+            } else{
+                results.imageLinks.thumbnail = results.imageLinks.thumbnail.replace(/(http:)/, "https:")
             }
+            if(typeof results.industryIdentifiers === 'undefined' || typeof results.industryIdentifiers[1] === 'undefined'){
+                results.industryIdentifiers = ['', {identifier: ''}];
+            }
+            
             return new Book(results.imageLinks.thumbnail , results.title, results.authors[0],results.description)
+  
         })
-    }).catch(error => res.render('pages/error', {error:error}))
+    }).catch(error => console.log("error", error))
 }
 
 client.connect().then(()=>{
