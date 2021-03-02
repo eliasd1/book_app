@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const superAgent = require('superagent');
+const methodOverride = require('method-override');
 require('dotenv').config();
 const pg = require('pg');
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs');
 app.use(cors());
 app.use(express.urlencoded({extended:true}))
+app.use(methodOverride('_method'))
 const baseAPIUrl = 'https://www.googleapis.com/books/v1/volumes';
 
 
@@ -26,6 +28,11 @@ app.post('/searches', handleSearch)
 
 
 app.get("/books/:id", handleBook)
+
+app.put("/books/:id", handleUpdate)
+
+app.delete("/books/:id", handleDelete)
+
 app.post("/books", handleSelectedBook)
 
 
@@ -55,13 +62,30 @@ function handleBook(req, res){
 }
 
 function handleSelectedBook(req, res){
-    let formData = req.body;
+    let formData = JSON.parse(req.body.data);
     let safeValues = [formData.title, formData.description, formData.authorName, formData.isbn, formData.img_url];
     let insertQuery = 'INSERT INTO favourite(title, description, author, isbn, image_url) VALUES($1, $2, $3, $4, $5) RETURNING *;'
 
     client.query(insertQuery, safeValues).then(data =>{
         res.redirect(`/books/${data.rows[0].id}`)
     })
+}
+
+function handleUpdate(req, res){
+    let updateQuery = 'UPDATE favourite SET title = $1, author = $2, description = $3, isbn = $4 WHERE id = $5';
+    let safeValues = [...Object.values(req.body.update), req.params.id];
+    client.query(updateQuery, safeValues).then(() =>{
+        console.log("Data has been update");
+        res.redirect('/');
+    }).catch(error => res.render('/pages/error', {error: error}))
+}
+
+function handleDelete(req, res){
+    let deleteQuery = 'DELETE FROM favourite WHERE id=$1'
+    client.query(deleteQuery, [req.params.id]).then(() =>{
+        console.log("Book has been deleted");
+        res.redirect('/');
+    }).catch(error => res.render('/pages/error', {error:error}))
 }
 
 function getDataFromFavourite(id){
