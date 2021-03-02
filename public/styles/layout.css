@@ -16,3 +16,11 @@ header>nav{
     text-align: center;
     padding:1em;
 }
+.style-button{
+    background:black;
+    border:1px solid black;
+    padding: 1em;
+    color:white;
+    text-decoration: none;
+    width:5em;
+}
