@@ -7,7 +7,10 @@
     <title>Document</title>
     <link rel="stylesheet" href="../styles/styles.css">
 </head>
+    <%- include('../partials/header.ejs') %>
+    <div id = "popUp"></div>
     <main>
+        
         <h3 id = "detailHeader">Book</h3>
         <section class = "display-books">
             <img src="<%= book.image_url %>" alt="">
@@ -15,7 +18,17 @@
             <h4><%= book.authorName %> </h4>
             <p><%= book.description %> </p>
             <p>ISBN: <%= book.isbn %></p>
-            <a class = "style-button" href="/">Return</a>
+            <div class = "div-buttons">
+                <button class = "style-button" id = "update">Update Book</button>
+                <a class = "style-button" href="/">Return</a>
+                <form id = "deleteForm" action="/books/<%= book.id %>?_method=DELETE" method = "POST">
+                    <button class = "style-button">Delete</button>
+                </form>
+            </div>
+        </section>
+        <section class = "section-update">
+            <%- include('../partials/edit.ejs') %>
         </section>
     </main>
+    
 <%- include('../partials/footer.ejs') %>
