@@ -20,9 +20,7 @@ const baseAPIUrl = 'https://www.googleapis.com/books/v1/volumes';
 app.get("/",handleHome)
 
 
-app.get('/searches/new', (req, res) =>{
-    res.render('pages/searches/new')
-})
+app.get('/searches/new', handleSearches)
 
 app.post('/searches', handleSearch)
 
@@ -39,7 +37,9 @@ function Book(img_url, title, author_name, description, isbn){
     this.isbn = isbn;
 }
 
-  
+function handleSearches(req, res){
+    res.render('pages/searches/new');
+}
 function handleHome(req,res){
 getdataFromDb().then(data=>{
 
@@ -83,6 +83,9 @@ function handleSearch(req, res){
     }).catch(error => res.render('pages/error', {error:error}))
 }
 
+function handleError(error){
+    console.log("error", error);
+}
 function getBooksData(searchQuery, searchBy){
     let searchParams = `${searchQuery}+in${searchBy}`
     const query = {
@@ -106,13 +109,12 @@ function getBooksData(searchQuery, searchBy){
             return new Book(results.imageLinks.thumbnail , results.title, results.authors[0],results.description, results.industryIdentifiers[1].identifier)
   
         })
-    }).catch(error => console.log("error", error))
+    }).catch(handleError)
 }
 
 client.connect().then(()=>{
 
 app.listen(process.env.PORT, () =>{
     console.log("Listening on port " + process.env.PORT)
-})}).catch(error=>
-    console.log("cant conected databas"))
+})}).catch(handleError)
 
