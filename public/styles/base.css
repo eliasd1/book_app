@@ -2,6 +2,8 @@ html, body{
     height: 100%;
 }
 body{
+    display:flex;
+    flex-direction: column;
     position: relative;
 }
 h1{
@@ -9,8 +11,9 @@ h1{
     text-align: center;
 }
 h3{
-    font-size:1.25rem;
+    font-size:1em;
     font-weight:bold;
+    overflow: hidden;
 }
 h4{
     font-size:1em;
@@ -25,14 +28,13 @@ header{
     background-color: black;
 }
 #mainSearch{
-    
-    height:93vh;
+    /* height:93vh; */
 }
 main{
+    flex:1;
     display: flex;
     flex-direction: column;
     align-items: center;
     background: #9b9b9b;
     position: relative;
-    height:93%;
 }
